@@ -24,8 +24,8 @@ bool g_LButtonDown = false;
 
 void RenderScene(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
 	// Renderer Test
 	g_Renderer->DrawSolidRect(
@@ -38,7 +38,37 @@ void RenderScene(void)
 		g_Object->m_color[2],
 		g_Object->m_color[3]
 	);
+	g_Renderer->DrawSolidRect(
+		g_Object->m_x,
+		g_Object->m_y,
+		0,
+		g_Object->m_size*1.3,
+		g_Object->m_color[0],
+		g_Object->m_color[1],
+		g_Object->m_color[2],
+		g_Object->m_color[3]*0.5
+	);
+	g_Renderer->DrawSolidRect(
+		g_Object->m_x,
+		g_Object->m_y,
+		0,
+		g_Object->m_size*1.5,
+		g_Object->m_color[0],
+		g_Object->m_color[1],
+		g_Object->m_color[2],
+		g_Object->m_color[3]*0.2
+	);
 
+	g_Renderer->DrawSolidRect(
+		0,
+		0,
+		0,
+		500,
+		0,
+		0.3,
+		0.3,
+		0.4
+	);
 	g_Object->Update();
 	glutSwapBuffers();
 }
@@ -65,6 +95,7 @@ void MouseInput(int button, int state, int x, int y)
 		if (g_LButtonDown)
 		{
 			//clicked
+			//범위 체크
 			g_Object->m_x = x - 250;
 			g_Object->m_y = -y + 500 - 250;
 		}

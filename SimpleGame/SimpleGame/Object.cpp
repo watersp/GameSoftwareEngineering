@@ -7,8 +7,8 @@ Object::Object(float x, float y)
 {
 	m_x = x;
 	m_y = y;
-	m_vX = 1;
-	m_vY = 0;
+	m_vX = 2;
+	m_vY = 2;
 
 	m_size = 70;
 	m_color[0] = 1;
@@ -25,13 +25,14 @@ Object::~Object()
 
 void Object::Update()
 {
-	float elapsedTime = 1.5;
+	float elapsedTime = 1.5f;
 	m_x = m_x + m_vX * elapsedTime;
 	m_y= m_y + m_vY * elapsedTime;
 
-	m_size = 30 * (sin(m_x)+1)/2;
+	m_size = 30.f * (sin(m_x)+1)/2;
 	m_color[0] = cos(m_x);
-	m_color[1] = 1-cos(m_x);
+	m_color[1] = cos(m_x);
+	m_color[2] = cos(m_x);
 
 	if (m_x > 250)
 	{
@@ -41,5 +42,15 @@ void Object::Update()
 	if (m_x < -250)
 	{
 		m_vX = -m_vX;
+	}
+
+	if (m_y > 250)
+	{
+		m_vY = -m_vY;
+	}
+
+	if (m_y < -250)
+	{
+		m_vY = -m_vY;
 	}
 }
