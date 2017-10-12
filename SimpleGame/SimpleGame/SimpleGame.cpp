@@ -20,6 +20,8 @@ but WITHOUT ANY WARRANTY.
 Renderer *g_Renderer = NULL;
 Object *g_Object = NULL;
 
+bool g_LButtonDown = false;
+
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -47,8 +49,28 @@ void Idle(void)
 	g_Object->Update();
 }
 
+//button
+//GLUT_LEFT_BUTTON, GLUT_MIDDLE_BUTTON, GLUT_RIGHT_BUTTON
+//state
+//GLUT_UP, GLUT_DOWN
 void MouseInput(int button, int state, int x, int y)
 {
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		g_LButtonDown = true;
+	}
+
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+	{
+		if (g_LButtonDown)
+		{
+			//clicked
+			g_Object->m_x = x - 250;
+			g_Object->m_y = -y + 500 - 250;
+		}
+		g_LButtonDown = false;
+	}
+
 	RenderScene();
 }
 
