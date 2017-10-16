@@ -6,4 +6,5 @@
 *.pch
 *.ilk
 *.opendb
+.vs/
 
