@@ -7,13 +7,13 @@ Object::Object(float x, float y)
 {
 	m_x = x;
 	m_y = y;
-	m_vX = 2;
-	m_vY = 2;
+	m_vX = 4.f*(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+	m_vY = 4.f*(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 
-	m_size = 70;
+	m_size = 5;
 	m_color[0] = 1;
-	m_color[1] = 0;
-	m_color[2] = 0;
+	m_color[1] = 1;
+	m_color[2] = 1;
 	m_color[3] = 1;
 }
 
@@ -29,10 +29,10 @@ void Object::Update()
 	m_x = m_x + m_vX * elapsedTime;
 	m_y= m_y + m_vY * elapsedTime;
 
-	m_size = 30.f * (sin(m_x)+1)/2;
-	m_color[0] = cos(m_x);
-	m_color[1] = cos(m_x);
-	m_color[2] = cos(m_x);
+	//m_size = 30.f * (sin(m_x)+1)/2;
+	//m_color[0] = cos(m_x);
+	//m_color[1] = cos(m_x);
+	//m_color[2] = cos(m_x);
 
 	if (m_x > 250)
 	{

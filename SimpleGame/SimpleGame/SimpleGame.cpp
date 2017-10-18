@@ -9,55 +9,25 @@ but WITHOUT ANY WARRANTY.
 */
 
 #include "stdafx.h"
+
+#include "Renderer.h"
+#include "SceneMgr.h"
+#include "Object.h"
+
 #include <iostream>
 #include "Dependencies\glew.h"
 #include "Dependencies\freeglut.h"
 
-#include "Renderer.h"
-
-#include "Object.h"
 
 Renderer *g_Renderer = NULL;
-Object *g_Object = NULL;
+SceneMgr *g_SceneMgr = NULL;
 
 bool g_LButtonDown = false;
 
 void RenderScene(void)
 {
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
-
-	// Renderer Test
-	g_Renderer->DrawSolidRect(
-		g_Object->m_x, 
-		g_Object->m_y,
-		0, 
-		g_Object->m_size,
-		g_Object->m_color[0],
-		g_Object->m_color[1],
-		g_Object->m_color[2],
-		g_Object->m_color[3]
-	);
-	g_Renderer->DrawSolidRect(
-		g_Object->m_x,
-		g_Object->m_y,
-		0,
-		g_Object->m_size*1.3,
-		g_Object->m_color[0],
-		g_Object->m_color[1],
-		g_Object->m_color[2],
-		g_Object->m_color[3]*0.5
-	);
-	g_Renderer->DrawSolidRect(
-		g_Object->m_x,
-		g_Object->m_y,
-		0,
-		g_Object->m_size*1.5,
-		g_Object->m_color[0],
-		g_Object->m_color[1],
-		g_Object->m_color[2],
-		g_Object->m_color[3]*0.2
-	);
+	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	g_Renderer->DrawSolidRect(
 		0,
@@ -65,18 +35,37 @@ void RenderScene(void)
 		0,
 		500,
 		0,
-		0.3,
-		0.3,
-		0.4
+		0,
+		0,
+		0.2
 	);
-	g_Object->Update();
+
+	g_SceneMgr->UpdateAllActorObjects();
+	
+	for (int i = 0; i < g_SceneMgr->GetMaxObjectCount(); i++)
+	{
+		if (g_SceneMgr->GetActorObject(i) != NULL)
+		{
+			// Renderer Test
+			g_Renderer->DrawSolidRect(
+				g_SceneMgr->GetActorObject(i)->m_x,
+				g_SceneMgr->GetActorObject(i)->m_y,
+				0,
+				g_SceneMgr->GetActorObject(i)->m_size,
+				g_SceneMgr->GetActorObject(i)->m_color[0],
+				g_SceneMgr->GetActorObject(i)->m_color[1],
+				g_SceneMgr->GetActorObject(i)->m_color[2],
+				g_SceneMgr->GetActorObject(i)->m_color[3]
+			);
+		}
+	}
+	
 	glutSwapBuffers();
 }
 
 void Idle(void)
 {
 	RenderScene();
-	g_Object->Update();
 }
 
 //button
@@ -96,8 +85,6 @@ void MouseInput(int button, int state, int x, int y)
 		{
 			//clicked
 			//범위 체크
-			g_Object->m_x = x - 250;
-			g_Object->m_y = -y + 500 - 250;
 		}
 		g_LButtonDown = false;
 	}
@@ -147,12 +134,16 @@ int main(int argc, char **argv)
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
 
-	g_Object = new Object(0, 0);
+	g_SceneMgr = new SceneMgr();
+	for (int i = 0; i < g_SceneMgr->GetMaxObjectCount(); i++)
+	{
+		g_SceneMgr->AddActorObject();
+	}
 
 	glutMainLoop();
 
 	delete g_Renderer;
-	delete g_Object;
+	delete g_SceneMgr;
 
     return 0;
 }

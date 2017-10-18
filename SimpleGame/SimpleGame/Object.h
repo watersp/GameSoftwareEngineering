@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdlib>
+
 class Object
 {
 public:
