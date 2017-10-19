@@ -1,8 +1,19 @@
 #include "stdafx.h"
 #include "SceneMgr.h"
 
-SceneMgr::SceneMgr()
+SceneMgr::SceneMgr(int width, int height)
 {
+	// Initialize Renderer
+	m_renderer = new Renderer(500, 500);
+
+	if (!m_renderer->IsInitialized())
+	{
+		std::cout << "SceneMgr::Renderer could not be initialized.. \n";
+	}
+
+	m_windowWidth = width;
+	m_windowHeight = height;
+
 	for (int i = 0; i < MAX_OBJECT_COUNT; i++)
 	{
 		m_actorObjects[i] = NULL;
@@ -10,6 +21,28 @@ SceneMgr::SceneMgr()
 	}
 }
 
+void SceneMgr::DrawAllObjects()
+{
+	m_renderer->DrawSolidRect(0, 0,	0, m_windowWidth, 0, 0, 0, 0.4);
+
+	for (int i = 0; i < MAX_OBJECT_COUNT; i++)
+	{
+		if (m_actorObjects[i] != NULL)
+		{
+			// Renderer Test
+			m_renderer->DrawSolidRect(
+				m_actorObjects[i]->m_x,
+				m_actorObjects[i]->m_y,
+				0,
+				m_actorObjects[i]->m_size,
+				m_actorObjects[i]->m_color[0],
+				m_actorObjects[i]->m_color[1],
+				m_actorObjects[i]->m_color[2],
+				m_actorObjects[i]->m_color[3]
+			);
+		}
+	}
+}
 
 SceneMgr::~SceneMgr()
 {
@@ -22,9 +55,6 @@ int SceneMgr::AddActorObject(float x, float y)
 	{
 		if (m_actorObjects[i] == NULL)
 		{
-			//success!
-			//float x = 250.f * 2.f * ((float)std::rand()/(float)RAND_MAX - 0.5f);
-			// y = 250.f * 2.f * ((float)std::rand()/(float)RAND_MAX - 0.5f);
 			m_actorObjects[i] = new Object(x, y);
 			return i;
 		}
@@ -46,6 +76,8 @@ void SceneMgr::DeleteActorObject(int index)
 
 void SceneMgr::UpdateAllActorObjects()
 {
+	DoCollisionTest();
+
 	for (int i = 0; i < MAX_OBJECT_COUNT; i++)
 	{
 		if (m_actorObjects[i] != NULL)
@@ -76,4 +108,66 @@ Object* SceneMgr::GetActorObject(int index)
 int SceneMgr::GetMaxObjectCount()
 {
 	return MAX_OBJECT_COUNT;
+}
+
+void SceneMgr::DoCollisionTest()
+{
+	for (int i = 0; i < MAX_OBJECT_COUNT; i++)
+	{
+		if (m_actorObjects[i] != NULL)
+		{
+			for (int j = 0; j < MAX_OBJECT_COUNT; j++)
+			{
+				if (i == j)
+					continue;
+
+				if (m_actorObjects[j] != NULL)
+				{
+					float minX, minY;
+					float maxX, maxY;
+
+					float minX1, minY1;
+					float maxX1, maxY1;
+
+					minX = m_actorObjects[i]->m_x - m_actorObjects[i]->m_size / 2.f;
+					minY = m_actorObjects[i]->m_y - m_actorObjects[i]->m_size / 2.f;
+					maxX = m_actorObjects[i]->m_x + m_actorObjects[i]->m_size / 2.f;
+					maxY = m_actorObjects[i]->m_y + m_actorObjects[i]->m_size / 2.f;
+					minX1 = m_actorObjects[i]->m_x - m_actorObjects[j]->m_size / 2.f;
+					minY1 = m_actorObjects[i]->m_y - m_actorObjects[j]->m_size / 2.f;
+					maxX1 = m_actorObjects[i]->m_x + m_actorObjects[j]->m_size / 2.f;
+					maxY1 = m_actorObjects[i]->m_y + m_actorObjects[j]->m_size / 2.f;
+					if (BoxBoxCollisionTest(minX, minY, maxX, maxY, minX1, minY1, maxX1, maxY1))
+					{
+						m_actorObjects[i]->m_color[0] = 1;
+						m_actorObjects[i]->m_color[1] = 0;
+						m_actorObjects[i]->m_color[2] = 0;
+						m_actorObjects[i]->m_color[3] = 1;
+					}
+					else
+					{
+						m_actorObjects[i]->m_color[0] = 1;
+						m_actorObjects[i]->m_color[1] = 1;
+						m_actorObjects[i]->m_color[2] = 1;
+						m_actorObjects[i]->m_color[3] = 1;
+					}
+				}
+			}
+		}
+	}
+}
+
+bool SceneMgr::BoxBoxCollisionTest(float minX, float minY, float maxX, float maxY, float minX1, float minY1, float maxX1, float maxY1)
+{
+	if (minX > maxX1)
+		return false;
+	if (maxX < minX1)
+		return false;
+
+	if (minY > maxY1)
+		return false;
+	if (maxY < minY1)
+		return false;
+
+	return true;
 }
