@@ -112,8 +112,11 @@ int SceneMgr::GetMaxObjectCount()
 
 void SceneMgr::DoCollisionTest()
 {
+	int collisionCount = 0;
+
 	for (int i = 0; i < MAX_OBJECT_COUNT; i++)
 	{
+		collisionCount = 0;
 		if (m_actorObjects[i] != NULL)
 		{
 			for (int j = 0; j < MAX_OBJECT_COUNT; j++)
@@ -133,25 +136,29 @@ void SceneMgr::DoCollisionTest()
 					minY = m_actorObjects[i]->m_y - m_actorObjects[i]->m_size / 2.f;
 					maxX = m_actorObjects[i]->m_x + m_actorObjects[i]->m_size / 2.f;
 					maxY = m_actorObjects[i]->m_y + m_actorObjects[i]->m_size / 2.f;
-					minX1 = m_actorObjects[i]->m_x - m_actorObjects[j]->m_size / 2.f;
-					minY1 = m_actorObjects[i]->m_y - m_actorObjects[j]->m_size / 2.f;
-					maxX1 = m_actorObjects[i]->m_x + m_actorObjects[j]->m_size / 2.f;
-					maxY1 = m_actorObjects[i]->m_y + m_actorObjects[j]->m_size / 2.f;
+					minX1 = m_actorObjects[j]->m_x - m_actorObjects[j]->m_size / 2.f;
+					minY1 = m_actorObjects[j]->m_y - m_actorObjects[j]->m_size / 2.f;
+					maxX1 = m_actorObjects[j]->m_x + m_actorObjects[j]->m_size / 2.f;
+					maxY1 = m_actorObjects[j]->m_y + m_actorObjects[j]->m_size / 2.f;
 					if (BoxBoxCollisionTest(minX, minY, maxX, maxY, minX1, minY1, maxX1, maxY1))
 					{
-						m_actorObjects[i]->m_color[0] = 1;
-						m_actorObjects[i]->m_color[1] = 0;
-						m_actorObjects[i]->m_color[2] = 0;
-						m_actorObjects[i]->m_color[3] = 1;
-					}
-					else
-					{
-						m_actorObjects[i]->m_color[0] = 1;
-						m_actorObjects[i]->m_color[1] = 1;
-						m_actorObjects[i]->m_color[2] = 1;
-						m_actorObjects[i]->m_color[3] = 1;
+						collisionCount++;
 					}
 				}
+			}
+			if (collisionCount > 0)
+			{
+				m_actorObjects[i]->m_color[0] = 1;
+				m_actorObjects[i]->m_color[1] = 0;
+				m_actorObjects[i]->m_color[2] = 0;
+				m_actorObjects[i]->m_color[3] = 1;
+			}
+			else
+			{
+				m_actorObjects[i]->m_color[0] = 1;
+				m_actorObjects[i]->m_color[1] = 1;
+				m_actorObjects[i]->m_color[2] = 1;
+				m_actorObjects[i]->m_color[3] = 1;
 			}
 		}
 	}
