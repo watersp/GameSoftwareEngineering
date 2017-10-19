@@ -7,6 +7,8 @@ public:
 	Object(float x, float y);
 	~Object();
 
+	float GetLife();
+
 	void Update();
 
 	float m_x;
@@ -16,5 +18,7 @@ public:
 
 	float m_size;
 	float m_color[4];
+
+	float m_life;
 };
 

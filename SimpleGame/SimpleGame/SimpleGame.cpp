@@ -84,11 +84,25 @@ void MouseInput(int button, int state, int x, int y)
 		if (g_LButtonDown)
 		{
 			//clicked
-			//범위 체크
+			for (int i = 0; i < 100; i++)
+				g_SceneMgr->AddActorObject(x-250, -y+250);
 		}
 		g_LButtonDown = false;
 	}
 
+	RenderScene();
+}
+
+void MotionInput(int x, int y)
+{
+	if (g_LButtonDown)
+	{
+		//clicked
+		for (int i = 0; i < 100; i++)
+		{
+			//g_SceneMgr->AddActorObject(x - 250, -y + 250);
+		}
+	}
 	RenderScene();
 }
 
@@ -131,14 +145,15 @@ int main(int argc, char **argv)
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);
 	glutKeyboardFunc(KeyInput);
+	glutMotionFunc(MotionInput);
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
 
 	g_SceneMgr = new SceneMgr();
-	for (int i = 0; i < g_SceneMgr->GetMaxObjectCount(); i++)
+	/*for (int i = 0; i < g_SceneMgr->GetMaxObjectCount(); i++)
 	{
 		g_SceneMgr->AddActorObject();
-	}
+	}*/
 
 	glutMainLoop();
 

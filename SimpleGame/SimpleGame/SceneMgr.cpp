@@ -6,6 +6,7 @@ SceneMgr::SceneMgr()
 	for (int i = 0; i < MAX_OBJECT_COUNT; i++)
 	{
 		m_actorObjects[i] = NULL;
+		m_bulletObjects[i] = NULL;
 	}
 }
 
@@ -14,7 +15,7 @@ SceneMgr::~SceneMgr()
 {
 }
 
-int SceneMgr::AddActorObject()
+int SceneMgr::AddActorObject(float x, float y)
 {
 	//Find empty slot
 	for (int i = 0; i < MAX_OBJECT_COUNT; i++)
@@ -22,8 +23,8 @@ int SceneMgr::AddActorObject()
 		if (m_actorObjects[i] == NULL)
 		{
 			//success!
-			float x = 250.f * 2.f * ((float)std::rand()/(float)RAND_MAX - 0.5f);
-			float y = 250.f * 2.f * ((float)std::rand()/(float)RAND_MAX - 0.5f);
+			//float x = 250.f * 2.f * ((float)std::rand()/(float)RAND_MAX - 0.5f);
+			// y = 250.f * 2.f * ((float)std::rand()/(float)RAND_MAX - 0.5f);
 			m_actorObjects[i] = new Object(x, y);
 			return i;
 		}
@@ -49,7 +50,20 @@ void SceneMgr::UpdateAllActorObjects()
 	{
 		if (m_actorObjects[i] != NULL)
 		{
-			m_actorObjects[i]->Update();
+			if (m_actorObjects[i]->GetLife() < 0.0001f)
+			{
+				//kill object
+				delete m_actorObjects[i];
+				m_actorObjects[i] = NULL;
+			}
+			else
+			{
+				m_actorObjects[i]->Update();
+			}
+		}
+		if (m_bulletObjects[i] != NULL)
+		{
+			m_bulletObjects[i]->Update();
 		}
 	}
 }

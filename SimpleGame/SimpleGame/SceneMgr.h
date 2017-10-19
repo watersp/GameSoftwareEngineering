@@ -12,7 +12,7 @@ public:
 	SceneMgr();
 	~SceneMgr();
 
-	int AddActorObject();
+	int AddActorObject(float x, float y);
 	void DeleteActorObject(int index);
 	void UpdateAllActorObjects();
 	Object* GetActorObject(int index);
@@ -20,5 +20,6 @@ public:
 
 private:
 	Object *m_actorObjects[MAX_OBJECT_COUNT];
+	Object *m_bulletObjects[MAX_OBJECT_COUNT];
 };
 
