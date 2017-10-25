@@ -4,7 +4,7 @@
 SceneMgr::SceneMgr(int width, int height)
 {
 	// Initialize Renderer
-	m_renderer = new Renderer(500, 500);
+	m_renderer = new Renderer(width, height);
 
 	if (!m_renderer->IsInitialized())
 	{
@@ -74,7 +74,7 @@ void SceneMgr::DeleteActorObject(int index)
 	}
 }
 
-void SceneMgr::UpdateAllActorObjects()
+void SceneMgr::UpdateAllActorObjects(float elapsedTime)
 {
 	DoCollisionTest();
 
@@ -82,7 +82,7 @@ void SceneMgr::UpdateAllActorObjects()
 	{
 		if (m_actorObjects[i] != NULL)
 		{
-			if (m_actorObjects[i]->GetLife() < 0.0001f)
+			if (m_actorObjects[i]->GetLife() < 0.0001f || m_actorObjects[i]->GetLifeTime() < 0.0001f)
 			{
 				//kill object
 				delete m_actorObjects[i];
@@ -90,12 +90,12 @@ void SceneMgr::UpdateAllActorObjects()
 			}
 			else
 			{
-				m_actorObjects[i]->Update();
+				m_actorObjects[i]->Update(elapsedTime);
 			}
 		}
 		if (m_bulletObjects[i] != NULL)
 		{
-			m_bulletObjects[i]->Update();
+			m_bulletObjects[i]->Update(elapsedTime);
 		}
 	}
 }

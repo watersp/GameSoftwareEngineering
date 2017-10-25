@@ -9,6 +9,7 @@ but WITHOUT ANY WARRANTY.
 */
 
 #include "stdafx.h"
+#include "windows.h"
 
 #include "SceneMgr.h"
 #include "Object.h"
@@ -19,14 +20,20 @@ but WITHOUT ANY WARRANTY.
 
 SceneMgr *g_SceneMgr = NULL;
 
+DWORD g_prevTime = 0;
+
 bool g_LButtonDown = false;
 
 void RenderScene(void)
 {
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	
+	DWORD currTime = timeGetTime();
+	DWORD elapsedTime = currTime - g_prevTime;
+	g_prevTime = currTime;
 
-	g_SceneMgr->UpdateAllActorObjects();
+	g_SceneMgr->UpdateAllActorObjects((float)elapsedTime);
 	g_SceneMgr->DrawAllObjects();
 	
 	glutSwapBuffers();
@@ -53,8 +60,8 @@ void MouseInput(int button, int state, int x, int y)
 		if (g_LButtonDown)
 		{
 			//clicked
-			//for (int i = 0; i < 100; i++)
-			//	g_SceneMgr->AddActorObject(x-250, -y+250);
+			for (int i = 0; i < 100; i++)
+				g_SceneMgr->AddActorObject(x-250, -y+250);
 		}
 		g_LButtonDown = false;
 	}
@@ -112,13 +119,15 @@ int main(int argc, char **argv)
 	glutSpecialFunc(SpecialKeyInput);
 
 	g_SceneMgr = new SceneMgr(500, 500);
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 200; i++)
 	{			
 		float x = 250.f * 2.f * ((float)std::rand()/(float)RAND_MAX - 0.5f);
 		float y = 250.f * 2.f * ((float)std::rand()/(float)RAND_MAX - 0.5f);
 
 		g_SceneMgr->AddActorObject(x, y);
 	}
+
+	g_prevTime = timeGetTime();
 
 	glutMainLoop();
 
