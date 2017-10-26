@@ -10,7 +10,7 @@ Object::Object(float x, float y)
 	m_vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 	m_vY = 200.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 
-	m_size = 10;
+	m_size = 20;
 	m_color[0] = 1;
 	m_color[1] = 1;
 	m_color[2] = 1;
@@ -60,7 +60,7 @@ void Object::Update(float elapsedTime)
 
 	if (m_lifeTime > 0.f)
 	{
-		m_lifeTime -= elapsedTimeInSecond;
+//		m_lifeTime -= elapsedTimeInSecond;
 	}
 }
 

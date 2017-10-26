@@ -60,7 +60,7 @@ void MouseInput(int button, int state, int x, int y)
 		if (g_LButtonDown)
 		{
 			//clicked
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 1; i++)
 				g_SceneMgr->AddActorObject(x-250, -y+250);
 		}
 		g_LButtonDown = false;
@@ -119,13 +119,13 @@ int main(int argc, char **argv)
 	glutSpecialFunc(SpecialKeyInput);
 
 	g_SceneMgr = new SceneMgr(500, 500);
-	for (int i = 0; i < 200; i++)
+	/*for (int i = 0; i < 200; i++)
 	{			
 		float x = 250.f * 2.f * ((float)std::rand()/(float)RAND_MAX - 0.5f);
 		float y = 250.f * 2.f * ((float)std::rand()/(float)RAND_MAX - 0.5f);
 
 		g_SceneMgr->AddActorObject(x, y);
-	}
+	}*/
 
 	g_prevTime = timeGetTime();
 
