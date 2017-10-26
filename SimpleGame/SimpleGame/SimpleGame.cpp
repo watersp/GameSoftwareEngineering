@@ -119,13 +119,6 @@ int main(int argc, char **argv)
 	glutSpecialFunc(SpecialKeyInput);
 
 	g_SceneMgr = new SceneMgr(500, 500);
-	/*for (int i = 0; i < 200; i++)
-	{			
-		float x = 250.f * 2.f * ((float)std::rand()/(float)RAND_MAX - 0.5f);
-		float y = 250.f * 2.f * ((float)std::rand()/(float)RAND_MAX - 0.5f);
-
-		g_SceneMgr->AddActorObject(x, y);
-	}*/
 
 	g_prevTime = timeGetTime();
 
