@@ -4,11 +4,13 @@
 class Object
 {
 public:
-	Object(float x, float y);
+	Object(float x, float y, int type, int fieldWidth, int fieldHeight);
 	~Object();
 
 	float GetLife();
 	float GetLifeTime();
+	int GetType();
+	void SetDamage(float amount);
 	
 	void Update(float elapsedTime);
 
@@ -22,5 +24,15 @@ public:
 
 	float m_life;
 	float m_lifeTime;
+
+	int m_type;
+
+	float m_lastBullet;
+	float m_lastArrow;
+
+	int m_parentID;
+
+	int m_fieldWidth;
+	int m_fieldHeight;
 };
 

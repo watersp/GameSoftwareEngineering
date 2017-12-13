@@ -22,11 +22,14 @@ SceneMgr *g_SceneMgr = NULL;
 
 DWORD g_prevTime = 0;
 
+int g_screenWidth = 500;
+int g_screenHeight = 1000;
+
 bool g_LButtonDown = false;
 
 void RenderScene(void)
 {
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	
 	DWORD currTime = timeGetTime();
@@ -61,7 +64,7 @@ void MouseInput(int button, int state, int x, int y)
 		{
 			//clicked
 			for (int i = 0; i < 1; i++)
-				g_SceneMgr->AddActorObject(x-250, -y+250);
+				g_SceneMgr->AddActorObject(x - g_screenWidth/2, -y + g_screenHeight/2, OBJECT_CHARACTER);
 		}
 		g_LButtonDown = false;
 	}
@@ -71,14 +74,6 @@ void MouseInput(int button, int state, int x, int y)
 
 void MotionInput(int x, int y)
 {
-	if (g_LButtonDown)
-	{
-		//clicked
-		for (int i = 0; i < 100; i++)
-		{
-			//g_SceneMgr->AddActorObject(x - 250, -y + 250);
-		}
-	}
 	RenderScene();
 }
 
@@ -98,7 +93,7 @@ int main(int argc, char **argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(500, 500);
+	glutInitWindowSize(g_screenWidth, g_screenHeight);
 	glutCreateWindow("Game Software Engineering KPU");
 
 	glewInit();
@@ -118,7 +113,8 @@ int main(int argc, char **argv)
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
 
-	g_SceneMgr = new SceneMgr(500, 500);
+	g_SceneMgr = new SceneMgr(g_screenWidth, g_screenHeight);
+	g_SceneMgr->AddActorObject(0, 0, OBJECT_BUILDING);
 
 	g_prevTime = timeGetTime();
 
